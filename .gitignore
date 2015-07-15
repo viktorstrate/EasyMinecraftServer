@@ -1,0 +1,4 @@
+node_modules
+
+# The server folder, will be downloaded on launch
+server

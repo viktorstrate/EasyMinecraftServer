@@ -1,0 +1,7 @@
+{
+  "name": "EasyMinecraftServer",
+  "version": "0.0.1",
+  "dependencies": {
+    "shelljs": "~0.5.1"
+  }
+}
