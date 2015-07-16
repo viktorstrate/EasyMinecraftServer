@@ -1,0 +1,26 @@
+{
+    "main": "index.html",
+    "name": "EasyMinecraftServer",
+    "description": "Easy minecraft server GUI",
+    "version": "0.0.1",
+    "keywords": [
+        "minecraft server",
+        "server",
+        "minecraft",
+        "vanilla",
+        "bukkit"
+    ],
+    "window": {
+        "title": "Easy Minecraft Server",
+        "toolbar": true,
+        "frame": true,
+        "width": 800,
+        "height": 500,
+        "position": "mouse",
+        "min_width": 600,
+        "min_height": 400
+    },
+    "dependencies": {
+        "shelljs": "~0.5.1"
+    }
+}
