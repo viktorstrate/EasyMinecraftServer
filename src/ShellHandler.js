@@ -39,7 +39,7 @@ server.stdout.on('data', function(data) {
 
 });
 
-function stop_server(done) {
+function stopServer(done) {
     sendCommand('stop');
     // add the done function to the shutdownListeners, to be ran when the server is fully closed.
     shutdownListeners.push(done);
