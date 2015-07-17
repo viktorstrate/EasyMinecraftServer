@@ -16,6 +16,44 @@
     src: url(fonts/OpenSans-Semibold.ttf);
 }
 
+#dashboard-memory {
+    width: calc(100% - 30px);
+    height: calc(40% - 60px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#dashboard-status {
+    width: calc(100% - 30px);
+    height: calc(60% - 60px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#dashboard-players {
+    width: calc(100% - 30px);
+    height: calc(100% - 80px);
+}
+
+#dashboard-left {
+    height: 100%;
+    width: 60%;
+    margin-top: 0px;
+    position: absolute;
+    left: 0px;
+}
+
+#dashboard-right {
+    position: absolute;
+    float: right;
+    width: 40%;
+    height: 100%;
+    right: 0;
+}
+
+
+
+
 @font-face {
     font-family: 'OpenSans Bold';
     src: url(fonts/OpenSans-Bold.ttf);
