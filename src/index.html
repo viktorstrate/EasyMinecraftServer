@@ -8,6 +8,7 @@
 <script src="lib/jquery.js"></script>
 <script src="ShellHandler.js"></script>
 <script src="terminal.js"></script>
+<script src="dashboard.js"></script>
 <script src="general.js"></script>
 <script src="viewHandler.js"></script>
 <body>
@@ -53,10 +54,10 @@
                     <h2>Status</h2>
 
                     <div id="status-button-container">
-                        <div class="big-button status-button bigbutton-green">Start</div>
-                        <div class="big-button status-button bigbutton-red">Stop</div>
-                        <div class="big-button status-button bigbutton-orange">Force Stop</div>
-                        <div class="big-button status-button bigbutton-blue">Restart</div>
+                        <div class="big-button status-button bigbutton-green" id="btn-start">Start</div>
+                        <div class="big-button status-button bigbutton-red" id="btn-stop">Stop</div>
+                        <div class="big-button status-button bigbutton-orange" id="btn-forcestop">Force Stop</div>
+                        <div class="big-button status-button bigbutton-blue" id="btn-restart">Restart</div>
                     </div>
                 </div>
                 <div class="window" id="dashboard-memory">

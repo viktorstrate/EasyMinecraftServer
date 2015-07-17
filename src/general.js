@@ -10,7 +10,6 @@ gui.Window.get().on('close', function () {
 
     // force closes the window after 2 sec if server isn't closed yet
     setTimeout(closeWindow, 2000);
-    setTimeout(killServer(), 10000);
 
     // Call the stopServer function from ShellHandler.js
     stopServer(closeWindow);

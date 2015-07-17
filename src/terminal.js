@@ -15,7 +15,7 @@ function terminalPrint(str) {
 
     // Smoothly scrolls down the terminal
     var scr = $('#terminal-window')[0].scrollHeight;
-    $('#terminal-window').animate({scrollTop: scr}, 700);
+    $('#terminal-window').animate({scrollTop: scr}, 200);
 }
 
 // Sends command to server when enter is pressed

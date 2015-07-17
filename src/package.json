@@ -14,8 +14,8 @@
         "title": "Easy Minecraft Server",
         "toolbar": true,
         "frame": true,
-        "width": 800,
-        "height": 500,
+        "width": 1140,
+        "height": 700,
         "position": "mouse",
         "min_width": 600,
         "min_height": 400
