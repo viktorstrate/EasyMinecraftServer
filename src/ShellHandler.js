@@ -35,7 +35,7 @@ server.stdout.on('data', function(data) {
     console.log(data);
 
     // print the text to the terminal window, function found in terminal.js
-    terminal_print(data);
+    terminalPrint(data);
 
 });
 
@@ -47,5 +47,6 @@ function stopServer(done) {
 
 // send Minecraft command to the server
 function sendCommand(command){
-  server.stdin.write(command+'\n');
+    server.stdin.write(command + '\n');
+    terminalPrint('> ' + command);
 }

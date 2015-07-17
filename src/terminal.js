@@ -6,13 +6,23 @@
  * Print text to the terminal window
  * @param str the text to print
  */
-function terminal_print(str) {
+function terminalPrint(str) {
     var text = htmlDecode(str);
     text = text.split("\n");
     text.forEach(function (element, index, array) {
         $("#console-window-text").append("<p>" + element + "</p>");
     });
 }
+
+$(document).ready(function () {
+    $("#terminal-input").keypress(function (e) {
+
+        if (e.which == 13) { // Enter key
+            sendCommand($('#terminal-input').val());
+        }
+
+    });
+});
 
 /**
  * removes html tags from text

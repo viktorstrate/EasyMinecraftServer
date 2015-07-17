@@ -27,6 +27,12 @@
     position: absolute;
 }
 
+/* To prevent elastic scrolling on OSX */
+html,
+body {
+    overflow: hidden;
+}
+
 body {
     width: 100%;
     height: 100%;
@@ -155,7 +161,7 @@ body {
 }
 
 #terminal-input {
-    width: 0 calc(100% - 24px);
+    width: calc(100% - 24px);
     height: 100%;
     padding-top: 0px;
     padding-right: 12px;
