@@ -16,11 +16,13 @@ server.stdin.setEncoding('utf8');
 
 // an array for all the functions to call when the server stops
 var shutdownListeners = [];
+var startupListeners = [];
 
 var serverStateType = {
     STOPPED: 0,
     RUNNING: 1,
-    STARTING: 2
+    STARTING: 2,
+    DOWNLOADING: 3
 };
 var serverState = serverStateType.STARTING;
 
@@ -29,6 +31,10 @@ server.stdout.on('data', function(data) {
     // if server is fully started
     if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server thread\/INFO]:\sDone\s\([0-9\.]+s\)!/g)) {
         serverState = serverStateType.RUNNING;
+        // loops through startupListeners and calls the functions inside
+        for (var i = 0; i < startupListeners.length; i++) {
+            startupListeners[i]();
+        }
     }
 
     // if server is closed

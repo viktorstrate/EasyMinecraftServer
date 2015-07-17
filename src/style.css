@@ -229,7 +229,7 @@ body {
     padding-bottom: 6px;
     padding-left: 6px;
     width: 125px;
-    background-color: #369eee;
+    background-color: #63B4F3;
     margin-top: 4px;
     margin-right: 4px;
     margin-bottom: 4px;
@@ -239,6 +239,25 @@ body {
     color: #FFFFFF;
     font-size: 18px;
 }
+
+.big-button:hover {
+    opacity: 0.7;
+}
+
+.bigbutton-green {
+    background-color: #54E856;
+}
+
+.bigbutton-red {
+    background-color: #ff7f7c;
+}
+
+.bigbutton-orange {
+    background-color: #FFC369;
+}
+
+
+
 
 #status-button-container {
     margin-left: auto;

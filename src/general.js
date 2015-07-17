@@ -20,3 +20,24 @@ gui.Window.get().on('close', function () {
         gui.Window.get().close(true);
     }
 });
+
+startupListeners.push(function () {
+    showNotification(null, 'Server Started', 'The Minecraft server started successfully!')
+});
+
+var showNotification = function (icon, title, body) {
+    var notification;
+
+    if (icon && icon.match(/^\./)) {
+        icon = icon.replace('.', 'file://' + process.cwd());
+        notification = new Notification(title, {icon: icon, body: body});
+    }
+
+    notification = new Notification(title, {body: body});
+
+    notification.onclick = function () {
+        NW.Window.get().focus();
+    };
+
+    return notification;
+};
