@@ -12,15 +12,19 @@ function terminalPrint(str) {
     text.forEach(function (element, index, array) {
         $("#console-window-text").append("<p>" + element + "</p>");
     });
+
+    // Smoothly scrolls down the terminal
+    var scr = $('#terminal-window')[0].scrollHeight;
+    $('#terminal-window').animate({scrollTop: scr}, 700);
 }
 
+// Sends command to server when enter is pressed
 $(document).ready(function () {
     $("#terminal-input").keypress(function (e) {
-
         if (e.which == 13) { // Enter key
             sendCommand($('#terminal-input').val());
+            $('#terminal-input').val('')
         }
-
     });
 });
 
