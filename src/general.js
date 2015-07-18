@@ -41,9 +41,9 @@ var showNotification = function (icon, title, body) {
     return notification;
 };
 
-function makeInitWindow() {
-    var initWindow = gui.Window.open('init.html');
-    initWindow.title = 'Easy Minecraft Server - Initial Setup';
+function makeWindowNew() {
+    var initWindow = gui.Window.open('new.html');
+
     initWindow.setShowInTaskbar = false;
 
     gui.Window.get().on('closed', function () {
@@ -55,7 +55,9 @@ function makeInitWindow() {
 
 serverDownloaded(function (err, downloaded) {
     if (!downloaded) {
-        var initWindow = makeInitWindow();
+        var initWindow = makeWindowNew();
+
+        console.log("HER");
     }
 });
 

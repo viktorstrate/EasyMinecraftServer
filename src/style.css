@@ -158,9 +158,10 @@ body {
 
 .window {
     background-color: #FFFFFF;
-    -webkit-box-shadow: 0px 0px 1px #323232;
-    box-shadow: 0px 0px 1px #323232;
+    -webkit-box-shadow: 0px 0px;
+    box-shadow: 0px 0px;
     margin-top: 40px;
+    border: 1px solid #D4D4D4;
 }
 
 .window h1, h2, h3, h4 {
@@ -265,6 +266,39 @@ body {
     width: 580px;
     padding-top: 10px;
 }
+
+#browse-server-path {
+    position: absolute;
+    display: none;
+}
+
+#browse-server-path-button {
+    float: right;
+    width: 150px;
+    margin-top: 8px;
+    margin-right: 9px;
+}
+
+#window-new {
+    height: 54px;
+    width: calc(100% - 40px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#browse-server-path-input {
+    float: left;
+    height: 31px;
+    margin-top: 10px;
+    margin-left: 11px;
+    width: calc(100% - 215px);
+    padding-left: 15px;
+    background-color: #F4F4F4;
+    border: 1px solid #D7D7D7;
+}
+
+
+
 
 @media (max-width: 1135px) {
     #status-button-container {
