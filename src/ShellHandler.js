@@ -22,7 +22,10 @@ var serverStateType = {
 };
 var serverState = serverStateType.STOPPED;
 
-startServer();
+serverDownloaded(function (err, downloaded) {
+    if (downloaded)
+        startServer();
+});
 
 // called when somthing is printed to the shell of the Minecraft server.
 function onConsoleOutput(data) {

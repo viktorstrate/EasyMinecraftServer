@@ -40,3 +40,22 @@ var showNotification = function (icon, title, body) {
 
     return notification;
 };
+
+function makeInitWindow() {
+    var initWindow = gui.Window.open('init.html');
+    initWindow.title = 'Easy Minecraft Server - Initial Setup';
+    initWindow.setShowInTaskbar = false;
+
+    gui.Window.get().on('closed', function () {
+        initWindow.close();
+    });
+
+    return initWindow;
+}
+
+serverDownloaded(function (err, downloaded) {
+    if (!downloaded) {
+        var initWindow = makeInitWindow();
+    }
+});
+
