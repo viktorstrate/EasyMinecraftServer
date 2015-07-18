@@ -8,6 +8,11 @@ var gui = require('nw.gui');
 // close down the Minecraft server when you close the window.
 gui.Window.get().on('close', function () {
 
+    if (serverState == serverStateType.STOPPED) {
+        closeWindow();
+        return;
+    }
+
     // force closes the window after 2 sec if server isn't closed yet
     setTimeout(closeWindow, 2000);
 
@@ -18,10 +23,6 @@ gui.Window.get().on('close', function () {
     function closeWindow() {
         gui.Window.get().close(true);
     }
-});
-
-startupListeners.push(function () {
-    showNotification(null, 'Server Started', 'The Minecraft server started successfully!')
 });
 
 var showNotification = function (icon, title, body) {

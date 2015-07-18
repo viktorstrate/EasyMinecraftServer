@@ -13,11 +13,13 @@ $(document).ready(function () {
     });
 
     $('#btn-restart').click(function () {
-        stopServer(function () {
+
+        stopServer().done(function () {
             setTimeout(function () {
                 startServer()
             }, 4000);
         });
+
     });
 
     $('#btn-forcestop').click(function () {

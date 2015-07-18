@@ -9,10 +9,8 @@ var shell = require('shelljs');
 shell.cd('server');
 
 var server = null;
-
-// an array for all the functions to call when the server stops
-var shutdownListeners = [];
-var startupListeners = [];
+var startingServerDeferred;
+var stoppingServerDeferred;
 
 var serverStateType = {
     STOPPED: 0,
@@ -32,23 +30,19 @@ function onConsoleOutput(data) {
     // if server is fully started
     if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server thread\/INFO]:\sDone\s\([0-9\.]+s\)!/g)) {
         serverState = serverStateType.RUNNING;
-        // loops through startupListeners and calls the functions inside
-        for (var i = 0; i < startupListeners.length; i++) {
-            startupListeners[i]();
-        }
+
+        startingServerDeferred.resolve();
+        showNotification(null, 'Server Started', 'The Minecraft server started successfully!')
     }
 
     // if server is closed
     if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server\sShutdown\sThread\/INFO\]:\sStopping\sserver/g)) {
 
         serverState = serverStateType.STOPPED;
-        // loops through shutdownListeners and calls the functions inside
-        for (var i = 0; i < shutdownListeners.length; i++) {
-            console.log("HER");
-            shutdownListeners[i]();
-        }
-        shutdownListeners = [];
+
         server = null;
+
+        stoppingServerDeferred.resolve();
     }
 
     console.log(data);
@@ -57,7 +51,10 @@ function onConsoleOutput(data) {
     terminalPrint(data);
 }
 
-function startServer(callback) {
+function startServer() {
+
+    startingServerDeferred = new $.Deferred();
+
     if (server == null) {
 
         // runs the minecraft server and puts the process in the variable server
@@ -72,21 +69,22 @@ function startServer(callback) {
 
         console.log("Starting server");
     }
+
+    return startingServerDeferred.promise();
 }
 
-function stopServer(callback) {
+function stopServer() {
+
+    stoppingServerDeferred = new $.Deferred();
 
     // if server already stopped call done function
     if (serverState == serverStateType.STOPPED) {
-        callback();
+        stoppingServerDeferred.reject('Server already stopped!');
     } else { // else stop server and add done function to the shutdown listeners
         sendCommand('stop');
-
-        if (callback) {
-            // add the done function to the shutdownListeners, to be ran when the server is fully closed.
-            shutdownListeners.push(callback);
-        }
     }
+
+    return stoppingServerDeferred.promise();
 
 }
 

@@ -19,6 +19,7 @@ db.transaction(function (tx) {
  * @param callback function(err, data)
  */
 function serverDownloaded(callback) {
+
     db.transaction(function (tx) {
         tx.executeSql('SELECT serverDownloaded FROM settings', [], function (tx, results) {
 
@@ -33,6 +34,7 @@ function serverDownloaded(callback) {
 
         })
     });
+
 }
 
 serverDownloaded(function (err, data) {
