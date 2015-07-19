@@ -251,7 +251,6 @@ body {
 
 .bigbutton-red {
     background-color: #ff7f7c;
-    height: auto;
 }
 
 .bigbutton-orange {
@@ -324,10 +323,35 @@ body {
     width: calc(100% - 280px);
 }
 
+#status-container {
+    /*width: calc(100% - 40px);*/
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
 
+.status-item {
+    background-color: #F7F7F7;
+    width: 205px;
+    height: 24px;
+    padding-top: 4px;
+    padding-right: 8px;
+    padding-bottom: 4px;
+    padding-left: 8px;
+    margin-top: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+    display: inline-block;
+}
 
+.status-item-name {
+    float: left;
+}
 
-
+.status-item-status {
+    float: right;
+}
 
 
 @media (max-width: 1135px) {
