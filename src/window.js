@@ -1,5 +1,5 @@
-/*
- * General GUI code
+/**
+ * Handles window logic, only loaded in main window and only once.
  */
 
 if (!localStorage.serverDownloaded) localStorage.serverDownloaded = false;
@@ -13,8 +13,6 @@ var gui = require('nw.gui');
 // close down the Minecraft server when you close the window.
 gui.Window.get().on('close', function () {
 
-    localStorage.serverDownloaded = false;
-
     if (serverState == serverStateType.STOPPED) {
         closeWindow();
         return;
@@ -24,7 +22,9 @@ gui.Window.get().on('close', function () {
     setTimeout(closeWindow, 2000);
 
     // Call the stopServer function from ShellHandler.js
-    stopServer(closeWindow);
+    stopServer().done(function () {
+        closeWindow();
+    });
 
 
     function closeWindow() {
