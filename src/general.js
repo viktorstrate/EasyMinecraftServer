@@ -2,6 +2,11 @@
  * General GUI code
  */
 
+if (!localStorage.serverDownloaded) localStorage.serverDownloaded = false;
+if (!localStorage.serverPath) localStorage.serverPath = null;
+
+console.log("ServerDownloaded: " + localStorage.serverDownloaded + ", ServerPath: " + localStorage.serverPath);
+
 // Import gui library for NW.js
 var gui = require('nw.gui');
 
@@ -54,11 +59,6 @@ function makeWindowNew() {
     return initWindow;
 }
 
-serverDownloaded(function (err, downloaded) {
-    if (!downloaded) {
-        var initWindow = makeWindowNew();
-
-        console.log("HER");
-    }
-});
+if (localStorage.serverDownloaded == 'false')
+    var initWindow = makeWindowNew();
 

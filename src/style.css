@@ -297,6 +297,14 @@ body {
     border: 1px solid #D7D7D7;
 }
 
+#btn-download {
+    width: 200px;
+    margin-top: 8px;
+    float: right;
+    margin-right: 19px;
+}
+
+
 
 
 

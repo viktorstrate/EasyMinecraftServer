@@ -5,9 +5,6 @@
 // import shelljs, to make it easier to use the shell.
 var shell = require('shelljs');
 
-// changes directory to the server directory
-shell.cd('server');
-
 var server = null;
 var startingServerDeferred;
 var stoppingServerDeferred;
@@ -20,10 +17,9 @@ var serverStateType = {
 };
 var serverState = serverStateType.STOPPED;
 
-serverDownloaded(function (err, downloaded) {
-    if (downloaded)
-        startServer();
-});
+if (localStorage.serverDownloaded == 'true') {
+    startServer();
+}
 
 // called when somthing is printed to the shell of the Minecraft server.
 function onConsoleOutput(data) {
@@ -57,6 +53,11 @@ function startServer() {
 
     if (server == null) {
 
+        // changes directory to the server directory
+        shell.cd(localStorage.serverPath);
+
+        console.log(shell.pwd());
+
         // runs the minecraft server and puts the process in the variable server
         server = shell.exec('java -Xmx1024M -Xms1024M -jar minecraft_server.jar nogui', {async: true});
 
@@ -66,6 +67,12 @@ function startServer() {
         serverState = serverStateType.STARTING;
 
         server.stdout.on('data', onConsoleOutput);
+
+        server.on('exit', function (code) {
+            serverState = serverStateType.STOPPED;
+            server = null;
+            stoppingServerDeferred.resolve();
+        });
 
         console.log("Starting server");
     }

@@ -3,7 +3,9 @@
  */
 
 var request = require("request"),
-    minecraftServerUrl = "https://s3.amazonaws.com/Minecraft.Download/versions/";
+    minecraftServerUrl = "http://s3.amazonaws.com/Minecraft.Download/versions/",
+    http = require('http'),
+    fs = require('fs');
 
 function getServerVersionList(callback) {
     request(minecraftServerUrl + "versions.json", callback);
