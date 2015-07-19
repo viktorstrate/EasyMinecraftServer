@@ -12,8 +12,7 @@ var stoppingServerDeferred;
 var serverStateType = {
     STOPPED: 0,
     RUNNING: 1,
-    STARTING: 2,
-    DOWNLOADING: 3
+    STARTING: 2
 };
 var serverState = serverStateType.STOPPED;
 
@@ -28,7 +27,7 @@ function onConsoleOutput(data) {
         serverState = serverStateType.RUNNING;
 
         startingServerDeferred.resolve();
-        showNotification(null, 'Server Started', 'The Minecraft server started successfully!')
+        showNotification('Server Started', 'The Minecraft server started successfully!')
     }
 
     // if server is closed

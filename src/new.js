@@ -3,6 +3,7 @@
  */
 
 var fs = require('fs');
+var gui = require('nw.gui');
 
 $(document).ready(function () {
     $("#browse-server-path-button").click(function () {
@@ -19,7 +20,7 @@ $(document).ready(function () {
         chooser.trigger('click');
     });
 
-    var progressBar = $("download-progress");
+    var progressBar = $("#download-progress");
 
     $("#btn-download").click(function () {
         var path = $("#browse-server-path-input").val();
@@ -29,7 +30,7 @@ $(document).ready(function () {
 
         fs.exists(path, function (exists) {
             if (exists) {
-                downloadServer('1.8.7', path).progress(function (data) {
+                downloadLatestServer(path).progress(function (data) {
 
                     if (data.totalSize) {
                         downloadSize = parseInt(data.totalSize);
@@ -39,12 +40,19 @@ $(document).ready(function () {
                         downloaded = downloaded + parseInt(data.chunkSize);
                     }
 
-                    console.log(downloaded / downloadSize * 100);
+                    var downloadedPercent = downloaded / downloadSize * 100
+
+                    progressBar.css('display', 'block');
+                    progressBar.css('width', downloadedPercent + '%');
+                    progressBar.html(Math.floor(downloadedPercent) + '%');
+
                 }).done(function () {
 
                     localStorage.serverPath = path;
                     localStorage.serverDownloaded = true;
                     console.log('Server Downloaded');
+                    var notification = showNotification('Server Downloaded', 'Server successfully downloaded to: ' + path);
+                    gui.Window.get().close();
 
                 }).fail(function (msg) {
 

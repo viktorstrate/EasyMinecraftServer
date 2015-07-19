@@ -32,23 +32,6 @@ gui.Window.get().on('close', function () {
     }
 });
 
-var showNotification = function (icon, title, body) {
-    var notification;
-
-    if (icon && icon.match(/^\./)) {
-        icon = icon.replace('.', 'file://' + process.cwd());
-        notification = new Notification(title, {icon: icon, body: body});
-    }
-
-    notification = new Notification(title, {body: body});
-
-    notification.onclick = function () {
-        NW.Window.get().focus();
-    };
-
-    return notification;
-};
-
 function makeWindowNew() {
     var initWindow = gui.Window.open('new.html');
 
@@ -61,6 +44,8 @@ function makeWindowNew() {
     return initWindow;
 }
 
+var initWindow;
+
 if (localStorage.serverDownloaded == 'false')
-    var initWindow = makeWindowNew();
+    initWindow = makeWindowNew();
 

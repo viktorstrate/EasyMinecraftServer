@@ -38,3 +38,36 @@ function downloadServer(version, path) {
 
     return deferred.promise();
 }
+
+function downloadLatestServer(path) {
+    var deferred = $.Deferred();
+
+    getServerVersionList(function (err, response, body) {
+        if (err) {
+            deferred.reject(err);
+            return;
+        }
+
+        if (response.statusCode == 200) {
+            var data = JSON.parse(body);
+
+            downloadServer(data.latest.release, path).progress(function (data) {
+
+                deferred.notify(data);
+
+            }).done(function () {
+
+                deferred.resolve();
+
+            }).fail(function (msg) {
+
+                deferred.reject(msg);
+
+            });
+
+        }
+
+    });
+
+    return deferred.promise();
+}

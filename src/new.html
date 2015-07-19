@@ -4,6 +4,7 @@
     <title>Easy Minecraft Server - New Server</title>
     <link href="style.css" rel="stylesheet" media="screen"/>
     <script src="lib/jquery.js"></script>
+    <script src="global.js"></script>
     <script src="minecraftDownloader.js"></script>
     <script src="new.js"></script>
 </head>
@@ -14,8 +15,9 @@
 
     <div class="big-button" id="browse-server-path-button">Browse Folder</div>
 </div>
-
-<div id="download-progress">100%</div>
+<div id="download-progress-container">
+    <div id="download-progress">0%</div>
+</div>
 
 <div class="big-button bigbutton-orange" id="btn-download">Setup &amp; Download</div>
 
