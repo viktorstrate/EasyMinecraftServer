@@ -251,6 +251,7 @@ body {
 
 .bigbutton-red {
     background-color: #ff7f7c;
+    height: auto;
 }
 
 .bigbutton-orange {
@@ -303,6 +304,22 @@ body {
     float: right;
     margin-right: 19px;
 }
+
+#download-progress {
+    float: left;
+    margin-left: 19px;
+    background-color: #47DF53;
+    height: 32px;
+    width: 745px;
+    margin-top: 8px;
+    width: calc(100% - 280px);
+    text-align: right;
+    padding-top: 5px;
+    padding-right: 20px;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
 
 
 

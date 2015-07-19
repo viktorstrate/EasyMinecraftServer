@@ -19,15 +19,28 @@ $(document).ready(function () {
         chooser.trigger('click');
     });
 
+    var progressBar = $("download-progress");
+
     $("#btn-download").click(function () {
         var path = $("#browse-server-path-input").val();
 
         var downloadSize;
-        var downloaded;
+        var downloaded = 0;
 
         fs.exists(path, function (exists) {
             if (exists) {
-                downloadServer('1.8.7', path).done(function () {
+                downloadServer('1.8.7', path).progress(function (data) {
+
+                    if (data.totalSize) {
+                        downloadSize = parseInt(data.totalSize);
+                    }
+
+                    if (data.chunkSize) {
+                        downloaded = downloaded + parseInt(data.chunkSize);
+                    }
+
+                    console.log(downloaded / downloadSize * 100);
+                }).done(function () {
 
                     localStorage.serverPath = path;
                     localStorage.serverDownloaded = true;
@@ -39,16 +52,6 @@ $(document).ready(function () {
                     localStorage.serverDownloaded = false;
                     alert("Error: " + msg);
 
-                }).progress(function (data) {
-                    if (data.totalSize) {
-                        downloadSize = data.totalSize;
-                    }
-
-                    if (data.progress) {
-                        downloaded += data.progress;
-                    }
-
-                    console.log()
                 });
             }
         })

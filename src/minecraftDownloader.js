@@ -23,11 +23,11 @@ function downloadServer(version, path) {
     http.get(getServerVersionUrl(version), function (response) {
         var length = response.headers['content-length'];
         console.log(length);
-        deferred.notify({length: length});
+        deferred.notify({totalSize: length});
 
         response.on('data', function (chunk) {
             console.log('got %d bytes of data out of %d', chunk.length, length);
-            deferred.notify({progress: chunk.length});
+            deferred.notify({chunkSize: chunk.length});
         });
         response.pipe(file);
     }).on('error', function (e) {

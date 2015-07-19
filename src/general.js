@@ -13,6 +13,8 @@ var gui = require('nw.gui');
 // close down the Minecraft server when you close the window.
 gui.Window.get().on('close', function () {
 
+    localStorage.serverDownloaded = false;
+
     if (serverState == serverStateType.STOPPED) {
         closeWindow();
         return;
