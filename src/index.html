@@ -57,10 +57,20 @@
                     <h2>Status</h2>
 
                     <div id="status-button-container">
-                        <div class="big-button status-button bigbutton-green" id="btn-start">Start</div>
-                        <div class="big-button status-button bigbutton-red" id="btn-stop">Stop</div>
-                        <div class="big-button status-button bigbutton-orange" id="btn-forcestop">Force Stop</div>
-                        <div class="big-button status-button bigbutton-blue" id="btn-restart">Restart</div>
+                        <div class="big-button status-button bigbutton-green" ng-click="startServer()"
+                             id="btn-start">Start
+                        </div>
+                        <div class="big-button status-button bigbutton-red" ng-click="stopServer()" id="btn-stop">
+                            Stop
+                        </div>
+                        <div class="big-button status-button bigbutton-orange" ng-click="forceStopServer()"
+                             id="btn-forcestop">
+                            Force Stop
+                        </div>
+                        <div class="big-button status-button bigbutton-blue" ng-click="restartServer()"
+                             id="btn-restart">
+                            Restart
+                        </div>
                     </div>
 
                     <div id="status-container">
@@ -71,11 +81,15 @@
                             </div>
                             <div class="status-item">
                                 <div class="status-item-name">Server Version</div>
-                                <div class="status-item-status" id="server-version"></div>
+                                <div class="status-item-status" id="server-version">{{serverVersion}}</div>
                             </div>
                             <div class="status-item" id="server-uptime-container">
                                 <div class="status-item-name">Server Uptime</div>
-                                <div class="status-item-status" id="server-uptime"></div>
+                                <div class="status-item-status" id="server-uptime">{{serverUptime}}</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-item-name">Online Players</div>
+                                <div class="status-item-status">{{onlinePlayers.length}}</div>
                             </div>
                         </div>
                     </div>
@@ -89,7 +103,11 @@
                     <h2>Online Players</h2>
 
                     <div id="player-container">
+                        <li class="player" ng-repeat="player in onlinePlayers">
+                            <img src="https://minotar.net/avatar/{{player}}" class="player-img"/>
 
+                            <div class="player-hover">{{player}}</div>
+                        </li>
                     </div>
 
                 </div>

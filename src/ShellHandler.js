@@ -138,7 +138,7 @@ var serverInstance = function () {
     var serverPlayerJoinedCallbacks = [];
     var serverPlayerLeftCallback = [];
 
-    // called when somthing is printed to the shell of the Minecraft server.
+    // called when something is printed to the shell of the Minecraft server.
     function onConsoleOutput(data) {
         // if server is fully started
         if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server thread\/INFO]:\sDone\s\([0-9\.]+s\)!/g)) {
@@ -159,7 +159,7 @@ var serverInstance = function () {
         }
 
         // if player joined
-        if (data.match(/\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s.*\slogged\sin\swith\sentity\sid\s\d+/g)) {
+        if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server\sthread\/INFO\]:\s.*\slogged\sin\swith\sentity\sid\s\d+/g)) {
 
             var findRegex = /\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\[.+\]\slogged\sin\swith\sentity\sid\s\d*/g;
             var username = findRegex.exec(data)[1];
@@ -173,7 +173,7 @@ var serverInstance = function () {
         }
 
         // if player left
-        if (data.match(/\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\slost\sconnection/g)) {
+        if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\slost\sconnection/g)) {
             var findRegex = /\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\slost\sconnection/g;
             var username = findRegex.exec(data)[1];
 
