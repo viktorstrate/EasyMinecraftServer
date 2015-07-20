@@ -26,7 +26,7 @@ $(document).ready(function () {
         killServer();
     });
 
-    onServerStateChange(updateServerState);
+    /*onServerStateChange(updateServerState);
 
     updateServerState(serverState);
 
@@ -47,7 +47,7 @@ $(document).ready(function () {
                 break;
         }
         $("#server-state").html(text);
-    }
+     }*/
 
     $("#server-version").html(localStorage.serverVersion);
 

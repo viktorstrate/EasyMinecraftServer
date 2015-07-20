@@ -14,6 +14,28 @@ var serverStateType = {
     RUNNING: 1,
     STARTING: 2
 };
+
+/**
+ * @param stateType serverStateType
+ * @return {string} state text
+ */
+function getStateText(stateType) {
+    var text = "";
+    switch (stateType) {
+        case serverStateType.STOPPED:
+            text = "Stopped";
+            break;
+        case serverStateType.RUNNING:
+            text = "Running";
+            break;
+        case serverStateType.STARTING:
+            text = "Starting";
+            break;
+    }
+
+    return text;
+}
+
 var serverStateChangeCallbacks = [];
 setServerState(serverStateType.STARTING);
 

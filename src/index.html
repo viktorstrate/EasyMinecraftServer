@@ -5,14 +5,16 @@
     <title>Easy Minecraft Server</title>
     <link href="style.css" rel="stylesheet" media="screen"/>
     <script src="lib/jquery.js"></script>
+    <script src="node_modules/angular/angular.min.js"></script>
     <script src="global.js"></script>
     <script src="ShellHandler.js"></script>
     <script src="terminal.js"></script>
     <script src="dashboard.js"></script>
     <script src="window.js"></script>
     <script src="viewHandler.js"></script>
+    <script src="angular.js"></script>
 </head>
-<body>
+<body ng-app="mainApp" ng-controller="mainController">
 
 <div id="container">
 	<div id="toolbar">
@@ -65,7 +67,7 @@
                         <div class="fixer-container">
                             <div class="status-item">
                                 <div class="status-item-name">Server State</div>
-                                <div class="status-item-status" id="server-state"></div>
+                                <div class="status-item-status" id="server-state">{{serverState}}</div>
                             </div>
                             <div class="status-item">
                                 <div class="status-item-name">Server Version</div>
