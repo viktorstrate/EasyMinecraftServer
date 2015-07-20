@@ -2,10 +2,10 @@
  * Logic for the new.html GUI
  */
 
-var fs = require('fs');
-var gui = require('nw.gui');
-
 $(document).ready(function () {
+    var fs = require('fs');
+    var gui = require('nw.gui');
+
     $("#browse-server-path-button").click(function () {
         console.log("Clicked");
 
@@ -46,17 +46,11 @@ $(document).ready(function () {
                     progressBar.css('width', downloadedPercent + '%');
                     progressBar.html(Math.floor(downloadedPercent) + '%');
 
-                }).done(function () {
+                }).done(function (version) {
 
                     localStorage.serverPath = path;
                     localStorage.serverDownloaded = true;
-                    getServerVersionList(function (err, response, body) {
-                        if (err) {
-                            console.log("Could not get latest mc server");
-                            return;
-                        }
-                        localStorage.serverVersion = body;
-                    });
+                    localStorage.serverVersion = version;
 
                     console.log('Server Downloaded');
                     var notification = showNotification('Server Downloaded', 'Server successfully downloaded to: ' + path);
@@ -75,4 +69,3 @@ $(document).ready(function () {
 
 
 });
-

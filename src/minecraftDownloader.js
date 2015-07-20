@@ -24,7 +24,7 @@ var downloadInstance = function () {
 
         var file = fs.createWriteStream(path + '/minecraft_server.jar');
 
-        http.get(getServerVersionUrl(version), function (response) {
+        http.get(download.getServerVersionUrl(version), function (response) {
             var length = response.headers['content-length'];
             console.log(length);
             deferred.notify({totalSize: length});
@@ -43,10 +43,11 @@ var downloadInstance = function () {
         return deferred.promise();
     };
 
+    var downloadVersion;
     download.downloadLatestServer = function (path) {
         var deferred = $.Deferred();
 
-        getServerVersionList(function (err, response, body) {
+        download.getServerVersions(function (err, response, body) {
             if (err) {
                 deferred.reject(err);
                 return;
@@ -54,14 +55,14 @@ var downloadInstance = function () {
 
             if (response.statusCode == 200) {
                 var data = JSON.parse(body);
-
-                downloadServer(data.latest.release, path).progress(function (data) {
+                downloadVersion = data.latest.release;
+                download.downloadServer(data.latest.release, path).progress(function (data) {
 
                     deferred.notify(data);
 
                 }).done(function () {
 
-                    deferred.resolve();
+                    deferred.resolve(downloadVersion);
 
                 }).fail(function (msg) {
 

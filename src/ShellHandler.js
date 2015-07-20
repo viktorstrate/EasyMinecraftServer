@@ -88,7 +88,8 @@ var serverInstance = function () {
                 server.setState(server.stateType.STOPPED);
                 server.process = null;
                 server.playersOnline = [];
-                stoppingServerDeferred.resolve();
+                if (stoppingServerDeferred)
+                    stoppingServerDeferred.resolve();
             });
 
             console.log("Starting server");
@@ -103,7 +104,7 @@ var serverInstance = function () {
 
         // if server already stopped call done function
         if (server.state == server.stateType.STOPPED) {
-            stoppingServerDeferred.reject('Server already stopped!');
+            stoppingServerDeferred.resolve('Server already stopped!');
         } else { // else stop server and add done function to the shutdown listeners
             server.sendCommand('stop');
         }
@@ -116,6 +117,14 @@ var serverInstance = function () {
         server.process.kill();
         server.setState(server.stateType.STOPPED);
         server.process = null;
+    };
+
+    server.restart = function () {
+        server.stop().done(function () {
+            setTimeout(function () {
+                server.start()
+            }, 4000);
+        });
     };
 
     // ###### SETUP ######
@@ -155,7 +164,8 @@ var serverInstance = function () {
 
             server.process = null;
 
-            stoppingServerDeferred.resolve();
+            if (stoppingServerDeferred)
+                stoppingServerDeferred.resolve();
         }
 
         // if player joined

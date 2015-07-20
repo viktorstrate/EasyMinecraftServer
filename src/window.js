@@ -49,3 +49,12 @@ var initWindow;
 
 if (localStorage.serverDownloaded == 'false')
     initWindow = makeWindowNew();
+
+function newServer() {
+    if (confirm('Are you sure? You want to make a new server')) {
+        server.stop().done(function () {
+            localStorage.serverDownloaded = false;
+            makeWindowNew()
+        });
+    }
+}
