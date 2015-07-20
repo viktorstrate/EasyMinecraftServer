@@ -14,7 +14,7 @@ var gui = require('nw.gui');
 // close down the Minecraft server when you close the window.
 gui.Window.get().on('close', function () {
 
-    if (serverState == serverStateType.STOPPED) {
+    if (server.state == server.stateType.STOPPED) {
         closeWindow();
         return;
     }
@@ -23,7 +23,7 @@ gui.Window.get().on('close', function () {
     setTimeout(closeWindow, 2000);
 
     // Call the stopServer function from ShellHandler.js
-    stopServer().done(function () {
+    server.stop().done(function () {
         closeWindow();
     });
 

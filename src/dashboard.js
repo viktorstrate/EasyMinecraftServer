@@ -5,25 +5,25 @@
 $(document).ready(function () {
 
     $('#btn-start').click(function () {
-        startServer();
+        server.start();
     });
 
     $('#btn-stop').click(function () {
-        stopServer();
+        server.stop();
     });
 
     $('#btn-restart').click(function () {
 
-        stopServer().done(function () {
+        server.stop().done(function () {
             setTimeout(function () {
-                startServer()
+                server.start()
             }, 4000);
         });
 
     });
 
     $('#btn-forcestop').click(function () {
-        killServer();
+        server.kill();
     });
 
     /*onServerStateChange(updateServerState);
@@ -55,8 +55,8 @@ $(document).ready(function () {
     var uptime = 0;
     var intervalId;
 
-    onServerStateChange(function (state) {
-        if (state == serverStateType.RUNNING) {
+    server.onStateChange(function (state) {
+        if (state == server.stateType.RUNNING) {
 
             intervalId = setInterval(function () {
                 uptime += 1;
@@ -96,11 +96,11 @@ $(document).ready(function () {
         });
     }
 
-    onPlayerJoined(function (username) {
+    server.onPlayerJoin(function (username) {
         addPlayerToGUI(username);
     });
 
-    onPlayerLeft(function (username) {
+    server.onPlayerLeave(function (username) {
         removePlayerFromGUI(username);
     })
 

@@ -1,12 +1,12 @@
 angular.module("mainApp", [])
     .controller("mainController", ["$scope", function ($scope) {
-        $scope.serverState = getStateText(serverState);
+        $scope.serverState = server.getStateText(server.state);
 
-        onServerStateChange(updateServerState);
+        server.onStateChange(updateServerState);
 
         function updateServerState() {
             console.log("State Changed!!!");
-            $scope.serverState = getStateText(serverState);
+            $scope.serverState = server.getStateText(server.state);
             $scope.$apply();
         }
 
