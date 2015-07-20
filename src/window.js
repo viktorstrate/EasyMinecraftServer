@@ -4,6 +4,7 @@
 
 if (!localStorage.serverDownloaded) localStorage.serverDownloaded = false;
 if (!localStorage.serverPath) localStorage.serverPath = null;
+if (!localStorage.serverVersion) localStorage.serverVersion = null;
 
 console.log("ServerDownloaded: " + localStorage.serverDownloaded + ", ServerPath: " + localStorage.serverPath);
 
@@ -48,4 +49,3 @@ var initWindow;
 
 if (localStorage.serverDownloaded == 'false')
     initWindow = makeWindowNew();
-

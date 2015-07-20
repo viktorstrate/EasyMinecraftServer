@@ -62,17 +62,19 @@
                     </div>
 
                     <div id="status-container">
-                        <div class="status-item">
-                            <div class="status-item-name">Server State</div>
-                            <div class="status-item-status">Running</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-item-name">Server Version</div>
-                            <div class="status-item-status">1.8.4</div>
-                        </div>
-                        <div class="status-item">
-                            <div class="status-item-name">Server Uptime</div>
-                            <div class="status-item-status">2d 4h 32m</div>
+                        <div class="fixer-container">
+                            <div class="status-item">
+                                <div class="status-item-name">Server State</div>
+                                <div class="status-item-status" id="server-state"></div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-item-name">Server Version</div>
+                                <div class="status-item-status" id="server-version"></div>
+                            </div>
+                            <div class="status-item" id="server-uptime-container">
+                                <div class="status-item-name">Server Uptime</div>
+                                <div class="status-item-status" id="server-uptime"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -83,7 +85,13 @@
             <div id="dashboard-right">
                 <div class="window" id="dashboard-players">
                     <h2>Online Players</h2>
+
+                    <div id="player-container">
+
+                    </div>
+
                 </div>
+
             </div>
 
         </div>

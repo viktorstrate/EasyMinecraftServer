@@ -50,6 +50,14 @@ $(document).ready(function () {
 
                     localStorage.serverPath = path;
                     localStorage.serverDownloaded = true;
+                    getServerVersionList(function (err, response, body) {
+                        if (err) {
+                            console.log("Could not get latest mc server");
+                            return;
+                        }
+                        localStorage.serverVersion = body;
+                    });
+
                     console.log('Server Downloaded');
                     var notification = showNotification('Server Downloaded', 'Server successfully downloaded to: ' + path);
                     gui.Window.get().close();
