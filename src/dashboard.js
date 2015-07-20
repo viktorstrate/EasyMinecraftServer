@@ -2,61 +2,28 @@
  * Handles all the logic in the dashboard view
  */
 
-$(document).ready(function () {
+function dashboardController($scope) {
+    // Server state
+    $scope.serverState = server.getStateText(server.state);
 
-    $('#btn-start').click(function () {
-        startServer();
-    });
+    server.onStateChange(updateServerState);
 
-    $('#btn-stop').click(function () {
-        stopServer();
-    });
-
-    $('#btn-restart').click(function () {
-
-        stopServer().done(function () {
-            setTimeout(function () {
-                startServer()
-            }, 4000);
-        });
-
-    });
-
-    $('#btn-forcestop').click(function () {
-        killServer();
-    });
-
-    onServerStateChange(updateServerState);
-
-    updateServerState(serverState);
-
-    function updateServerState(state) {
-        var text;
-        switch (state) {
-            case serverStateType.RUNNING:
-                text = "Running";
-                break;
-            case serverStateType.STARTING:
-                text = "Starting";
-                break;
-            case serverStateType.STOPPED:
-                text = "Stopped";
-                break;
-            default:
-                text = "Not set";
-                break;
-        }
-        $("#server-state").html(text);
+    function updateServerState() {
+        console.log("State Changed!!!");
+        $scope.serverState = server.getStateText(server.state);
+        $scope.$apply();
     }
 
-    $("#server-version").html(localStorage.serverVersion);
+    // Server version
+    $scope.serverVersion = localStorage.serverVersion;
 
-    var uptimeId = $("#server-uptime");
+    // Server uptime
     var uptime = 0;
     var intervalId;
+    $scope.serverUptime = "0d 0h 0m 0s";
 
-    onServerStateChange(function (state) {
-        if (state == serverStateType.RUNNING) {
+    server.onStateChange(function (state) {
+        if (state == server.stateType.RUNNING) {
 
             intervalId = setInterval(function () {
                 uptime += 1;
@@ -80,28 +47,38 @@ $(document).ready(function () {
 
         var string = day + "d " + hour + "h " + min + "m " + sec + "s";
 
-        uptimeId.html(string);
+        $scope.serverUptime = string;
+        $scope.$apply();
     }
 
-    var playerContainer = $("#player-container");
+    // Online Players
+    $scope.onlinePlayers = [];
 
-    function addPlayerToGUI(username) {
-        playerContainer.prepend('<div class="player"><img src="https://minotar.net/avatar/' + username + '" class="player-img"></img><div class="player-hover">' + username + '</div></div>')
-    }
-
-    function removePlayerFromGUI(username) {
-        playerContainer.find('.player-hover').each(function (i, element) {
-            if (element.html == username)
-                element.parentElement.remove();
-        });
-    }
-
-    onPlayerJoined(function (username) {
-        addPlayerToGUI(username);
+    server.onPlayerJoin(function (username) {
+        $scope.onlinePlayers.push(username);
     });
 
-    onPlayerLeft(function (username) {
-        removePlayerFromGUI(username);
-    })
+    server.onPlayerLeave(function (username) {
+        for (var i = 0; i < $scope.onlinePlayers.length; i++) {
+            if ($scope.onlinePlayers[i] == username)
+                $scope.onlinePlayers.splice(i, 1);
+        }
+    });
 
-});
+    // Dashboard buttons
+    $scope.stopServer = function () {
+        server.stop();
+    };
+
+    $scope.startServer = function () {
+        server.start();
+    };
+
+    $scope.forceStopServer = function () {
+        server.forceStopServer();
+    };
+
+    $scope.restartServer = function () {
+        server.restart();
+    }
+}

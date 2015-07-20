@@ -1,73 +1,82 @@
-/**
+/*
  * Handles downloading of server jar's
  */
 
-var request = require("request"),
-    minecraftServerUrl = "http://s3.amazonaws.com/Minecraft.Download/versions/",
-    http = require('http'),
-    fs = require('fs');
+var downloadInstance = function () {
 
-function getServerVersionList(callback) {
-    request(minecraftServerUrl + "versions.json", callback);
-}
+    var download = this;
 
-function getServerVersionUrl(version) {
-    return minecraftServerUrl + version + '/minecraft_server.' + version + '.jar';
-}
+    var request = require("request"),
+        minecraftServerUrl = "http://s3.amazonaws.com/Minecraft.Download/versions/",
+        http = require('http'),
+        fs = require('fs');
 
-function downloadServer(version, path) {
-    deferred = $.Deferred();
+    download.getServerVersions = function (callback) {
+        request(minecraftServerUrl + "versions.json", callback);
+    };
 
-    var file = fs.createWriteStream(path + '/minecraft_server.jar');
+    download.getServerVersionUrl = function (version) {
+        return minecraftServerUrl + version + '/minecraft_server.' + version + '.jar';
+    };
 
-    http.get(getServerVersionUrl(version), function (response) {
-        var length = response.headers['content-length'];
-        console.log(length);
-        deferred.notify({totalSize: length});
+    download.downloadServer = function (version, path) {
+        deferred = $.Deferred();
 
-        response.on('data', function (chunk) {
-            console.log('got %d bytes of data out of %d', chunk.length, length);
-            deferred.notify({chunkSize: chunk.length});
-        });
-        response.pipe(file);
-    }).on('error', function (e) {
-        deferred.reject(e.message);
-    }).on('close', function () {
-        deferred.resolve();
-    });
+        var file = fs.createWriteStream(path + '/minecraft_server.jar');
 
-    return deferred.promise();
-}
+        http.get(download.getServerVersionUrl(version), function (response) {
+            var length = response.headers['content-length'];
+            console.log(length);
+            deferred.notify({totalSize: length});
 
-function downloadLatestServer(path) {
-    var deferred = $.Deferred();
-
-    getServerVersionList(function (err, response, body) {
-        if (err) {
-            deferred.reject(err);
-            return;
-        }
-
-        if (response.statusCode == 200) {
-            var data = JSON.parse(body);
-
-            downloadServer(data.latest.release, path).progress(function (data) {
-
-                deferred.notify(data);
-
-            }).done(function () {
-
-                deferred.resolve();
-
-            }).fail(function (msg) {
-
-                deferred.reject(msg);
-
+            response.on('data', function (chunk) {
+                console.log('got %d bytes of data out of %d', chunk.length, length);
+                deferred.notify({chunkSize: chunk.length});
             });
+            response.pipe(file);
+        }).on('error', function (e) {
+            deferred.reject(e.message);
+        }).on('close', function () {
+            deferred.resolve();
+        });
 
-        }
+        return deferred.promise();
+    };
 
-    });
+    var downloadVersion;
+    download.downloadLatestServer = function (path) {
+        var deferred = $.Deferred();
 
-    return deferred.promise();
-}
+        download.getServerVersions(function (err, response, body) {
+            if (err) {
+                deferred.reject(err);
+                return;
+            }
+
+            if (response.statusCode == 200) {
+                var data = JSON.parse(body);
+                downloadVersion = data.latest.release;
+                download.downloadServer(data.latest.release, path).progress(function (data) {
+
+                    deferred.notify(data);
+
+                }).done(function () {
+
+                    deferred.resolve(downloadVersion);
+
+                }).fail(function (msg) {
+
+                    deferred.reject(msg);
+
+                });
+
+            }
+
+        });
+
+        return deferred.promise();
+    };
+
+};
+
+var download = new downloadInstance();

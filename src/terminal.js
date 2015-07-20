@@ -22,7 +22,7 @@ function terminalPrint(str) {
 $(document).ready(function () {
     $("#terminal-input").keypress(function (e) {
         if (e.which == 13) { // Enter key
-            sendCommand($('#terminal-input').val());
+            server.sendCommand($('#terminal-input').val());
             $('#terminal-input').val('')
         }
     });

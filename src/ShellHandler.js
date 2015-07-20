@@ -2,161 +2,208 @@
  * Handles the shell and the minecraft server
  */
 
-// import shelljs, to make it easier to use the shell.
-var shell = require('shelljs');
+var serverInstance = function () {
 
-var server = null;
-var startingServerDeferred;
-var stoppingServerDeferred;
+    var server = this;
 
-var serverStateType = {
-    STOPPED: 0,
-    RUNNING: 1,
-    STARTING: 2
-};
-var serverStateChangeCallbacks = [];
-setServerState(serverStateType.STARTING);
+    // ###### FUNCTIONS ######
 
-/**
- * Set the state of the server
- * @param stateType serverStateType
- */
-function setServerState(stateType) {
-    serverState = stateType;
-    for (var i = 0; i < serverStateChangeCallbacks.length; i++) {
-        serverStateChangeCallbacks[i](stateType);
-    }
-}
+    // ## State functions ##
+    /**
+     * Set the state of the server
+     * @param stateType serverStateType
+     */
+    server.setState = function (stateType) {
+        server.state = stateType;
+        for (var i = 0; i < serverStateChangeCallbacks.length; i++) {
+            serverStateChangeCallbacks[i](stateType);
+        }
+    };
 
-function onServerStateChange(callback) {
-    serverStateChangeCallbacks.push(callback);
-}
+    server.stateType = {
+        STOPPED: 0,
+        RUNNING: 1,
+        STARTING: 2
+    };
 
-if (localStorage.serverDownloaded == 'true') {
-    startServer();
-}
-
-var playersOnline = [];
-var serverPlayerJoinedCallbacks = [];
-var serverPlayerLeftCallback = [];
-
-function onPlayerJoined(callback) {
-    serverPlayerJoinedCallbacks.push(callback);
-}
-
-function onPlayerLeft(callback) {
-    serverPlayerLeftCallback.push(callback);
-}
-
-// called when somthing is printed to the shell of the Minecraft server.
-function onConsoleOutput(data) {
-    // if server is fully started
-    if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server thread\/INFO]:\sDone\s\([0-9\.]+s\)!/g)) {
-        setServerState(serverStateType.RUNNING);
-
-        startingServerDeferred.resolve();
-        showNotification('Server Started', 'The Minecraft server started successfully!')
-    }
-
-    // if server is closed
-    if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server\sShutdown\sThread\/INFO\]:\sStopping\sserver/g)) {
-
-        setServerState(serverStateType.STOPPED);
-
-        server = null;
-
-        stoppingServerDeferred.resolve();
-    }
-
-    // if player joined
-    if (data.match(/\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s.*\slogged\sin\swith\sentity\sid\s\d+/g)) {
-
-        var findRegex = /\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\[.+\]\slogged\sin\swith\sentity\sid\s\d*/g;
-        var username = findRegex.exec(data)[1];
-
-        for (var i = 0; i < serverPlayerJoinedCallbacks.length; i++) {
-            serverPlayerJoinedCallbacks[i](username);
+    /**
+     * @param stateType serverStateType
+     * @return {string} state text
+     */
+    server.getStateText = function (stateType) {
+        var text = "";
+        switch (stateType) {
+            case server.stateType.STOPPED:
+                text = "Stopped";
+                break;
+            case server.stateType.RUNNING:
+                text = "Running";
+                break;
+            case server.stateType.STARTING:
+                text = "Starting";
+                break;
         }
 
-        console.log("User joined: " + username);
+        return text;
+    };
 
-    }
+    // ### Events ###
 
-    // if player left
-    if (data.match(/\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\slost\sconnection/g)) {
-        var findRegex = /\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\slost\sconnection/g;
-        var username = findRegex.exec(data)[1];
+    server.onStateChange = function (callback) {
+        serverStateChangeCallbacks.push(callback);
+    };
 
-        for (var i = 0; i < serverPlayerLeftCallback.length; i++) {
-            serverPlayerLeftCallback[i](username);
+    server.onPlayerJoin = function (callback) {
+        serverPlayerJoinedCallbacks.push(callback);
+    };
+
+    server.onPlayerLeave = function (callback) {
+        serverPlayerLeftCallback.push(callback);
+    };
+
+    // ## Server Management ##
+
+    server.start = function () {
+
+        startingServerDeferred = new $.Deferred();
+
+        if (server.process == null) {
+
+            // changes directory to the server directory
+            shell.cd(localStorage.serverPath);
+
+            console.log(shell.pwd());
+
+            // runs the minecraft server and puts the process in the variable server
+            server.process = shell.exec('java -Xmx1024M -Xms1024M -jar minecraft_server.jar nogui', {async: true});
+
+            // sets the encoding for inputs
+            server.process.stdin.setEncoding('utf8');
+
+            server.setState(server.stateType.STARTING);
+
+            server.process.stdout.on('data', onConsoleOutput);
+
+            server.process.on('exit', function (code) {
+                server.setState(server.stateType.STOPPED);
+                server.process = null;
+                server.playersOnline = [];
+                if (stoppingServerDeferred)
+                    stoppingServerDeferred.resolve();
+            });
+
+            console.log("Starting server");
         }
 
-        console.log("User left: " + username);
-    }
+        return startingServerDeferred.promise();
+    };
 
-    console.log(data);
+    server.stop = function () {
 
-    // print the text to the terminal window, function found in terminal.js
-    terminalPrint(data);
-}
+        stoppingServerDeferred = new $.Deferred();
 
-function startServer() {
+        // if server already stopped call done function
+        if (server.state == server.stateType.STOPPED) {
+            stoppingServerDeferred.resolve('Server already stopped!');
+        } else { // else stop server and add done function to the shutdown listeners
+            server.sendCommand('stop');
+        }
 
-    startingServerDeferred = new $.Deferred();
+        return stoppingServerDeferred.promise();
 
-    if (server == null) {
+    };
 
-        // changes directory to the server directory
-        shell.cd(localStorage.serverPath);
+    server.kill = function () {
+        server.process.kill();
+        server.setState(server.stateType.STOPPED);
+        server.process = null;
+    };
 
-        console.log(shell.pwd());
-
-        // runs the minecraft server and puts the process in the variable server
-        server = shell.exec('java -Xmx1024M -Xms1024M -jar minecraft_server.jar nogui', {async: true});
-
-        // sets the encoding for inputs
-        server.stdin.setEncoding('utf8');
-
-        setServerState(serverStateType.STARTING);
-
-        server.stdout.on('data', onConsoleOutput);
-
-        server.on('exit', function (code) {
-            setServerState(serverStateType.STOPPED);
-            server = null;
-            playersOnline = [];
-            stoppingServerDeferred.resolve();
+    server.restart = function () {
+        server.stop().done(function () {
+            setTimeout(function () {
+                server.start()
+            }, 4000);
         });
+    };
 
-        console.log("Starting server");
+    // ###### SETUP ######
+
+    // import shell.js, to make it easier to use the shell.
+    var shell = require('shelljs');
+
+    server.process = null;
+    var startingServerDeferred;
+    var stoppingServerDeferred;
+
+    var serverStateChangeCallbacks = [];
+
+
+    if (localStorage.serverDownloaded == 'true') {
+        server.start();
     }
 
-    return startingServerDeferred.promise();
-}
+    server.playersOnline = [];
+    var serverPlayerJoinedCallbacks = [];
+    var serverPlayerLeftCallback = [];
 
-function stopServer() {
+    // called when something is printed to the shell of the Minecraft server.
+    function onConsoleOutput(data) {
+        // if server is fully started
+        if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server thread\/INFO]:\sDone\s\([0-9\.]+s\)!/g)) {
+            server.setState(server.stateType.RUNNING);
 
-    stoppingServerDeferred = new $.Deferred();
+            startingServerDeferred.resolve();
+            showNotification('Server Started', 'The Minecraft server started successfully!')
+        }
 
-    // if server already stopped call done function
-    if (serverState == serverStateType.STOPPED) {
-        stoppingServerDeferred.reject('Server already stopped!');
-    } else { // else stop server and add done function to the shutdown listeners
-        sendCommand('stop');
+        // if server is closed
+        if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server\sShutdown\sThread\/INFO\]:\sStopping\sserver/g)) {
+
+            server.setState(server.stateType.STOPPED);
+
+            server.process = null;
+
+            if (stoppingServerDeferred)
+                stoppingServerDeferred.resolve();
+        }
+
+        // if player joined
+        if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server\sthread\/INFO\]:\s.*\slogged\sin\swith\sentity\sid\s\d+/g)) {
+
+            var findRegex = /\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\[.+\]\slogged\sin\swith\sentity\sid\s\d*/g;
+            var username = findRegex.exec(data)[1];
+
+            for (var i = 0; i < serverPlayerJoinedCallbacks.length; i++) {
+                serverPlayerJoinedCallbacks[i](username);
+            }
+
+            console.log("User joined: " + username);
+
+        }
+
+        // if player left
+        if (data.match(/\[\d{2}:\d{2}:\d{2}]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\slost\sconnection/g)) {
+            var findRegex = /\[\d+:\d+:\d+\]\s\[Server\sthread\/INFO\]:\s([a-zA-Z0-9_]+)\slost\sconnection/g;
+            var username = findRegex.exec(data)[1];
+
+            for (var i = 0; i < serverPlayerLeftCallback.length; i++) {
+                serverPlayerLeftCallback[i](username);
+            }
+
+            console.log("User left: " + username);
+        }
+
+        // print the text to the terminal window, function found in terminal.js
+        terminalPrint(data);
     }
 
-    return stoppingServerDeferred.promise();
 
-}
+    // send Minecraft command to the server
+    server.sendCommand = function (command) {
+        server.process.stdin.write(command + '\n');
+        terminalPrint('> ' + command);
+    }
+};
 
-function killServer() {
-    server.kill();
-    setServerState(serverStateType.STOPPED);
-    server = null;
-}
-
-// send Minecraft command to the server
-function sendCommand(command){
-    server.stdin.write(command + '\n');
-    terminalPrint('> ' + command);
-}
+var server = new serverInstance();
