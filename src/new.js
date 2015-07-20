@@ -30,7 +30,7 @@ $(document).ready(function () {
 
         fs.exists(path, function (exists) {
             if (exists) {
-                downloadLatestServer(path).progress(function (data) {
+                download.downloadLatestServer(path).progress(function (data) {
 
                     if (data.totalSize) {
                         downloadSize = parseInt(data.totalSize);
