@@ -1,4 +1,10 @@
-var menuInstace = function () {
+/*
+ * Adds a menu on the top of the window
+ * More information: https://github.com/nwjs/nw.js/wiki/Window-menu
+ */
+
+
+var MenuUpdate = function () {
 
     var gui = require('nw.gui');
 
@@ -48,4 +54,4 @@ var menuInstace = function () {
 
 };
 
-var menu = new menuInstace();
+var menu = new MenuUpdate();

@@ -1,5 +1,5 @@
 /*
- * Class to handle the server.properties file
+ * Class to handle the server.properties file, still work in progress
  */
 
 var ServerPropertiesMaster = function () {

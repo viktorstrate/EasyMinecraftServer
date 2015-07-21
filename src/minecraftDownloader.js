@@ -2,8 +2,9 @@
  * Handles downloading of server jar's
  */
 
-var downloadInstance = function () {
+var DownloadObject = function () {
 
+    // To access this in other functions inside this function
     var download = this;
 
     var request = require("request"),
@@ -11,14 +12,29 @@ var downloadInstance = function () {
         http = require('http'),
         fs = require('fs');
 
+    /**
+     * Gets all the versions of minecraft servers, as json
+     * @param callback all the versions as json.
+     */
     download.getServerVersions = function (callback) {
         request(minecraftServerUrl + "versions.json", callback);
     };
 
+    /**
+     *
+     * @param version the desired Minecraft version as a string eg. 1.2.3
+     * @returns {string}
+     */
     download.getServerVersionUrl = function (version) {
         return minecraftServerUrl + version + '/minecraft_server.' + version + '.jar';
     };
 
+    /**
+     * Downloads a Minecraft server jar to a folder
+     * @param version version the desired Minecraft version as a string eg. 1.2.3
+     * @param path the path to download to.
+     * @returns {*}
+     */
     download.downloadServer = function (version, path) {
         deferred = $.Deferred();
 
@@ -44,6 +60,11 @@ var downloadInstance = function () {
     };
 
     var downloadVersion;
+    /**
+     * downloads the latest Minecraft server jar
+     * @param path the path to download to.
+     * @returns {deferred.promise}
+     */
     download.downloadLatestServer = function (path) {
         var deferred = $.Deferred();
 
@@ -79,4 +100,4 @@ var downloadInstance = function () {
 
 };
 
-var download = new downloadInstance();
+var download = new DownloadObject();

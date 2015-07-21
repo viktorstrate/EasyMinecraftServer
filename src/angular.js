@@ -1,3 +1,4 @@
+// Sets up angular
 angular.module("mainApp", [])
     .controller("mainController", ["$scope", function ($scope) {
 

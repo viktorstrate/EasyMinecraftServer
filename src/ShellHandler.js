@@ -1,8 +1,8 @@
 /*
- * Handles the shell and the minecraft server
+ * Handles the shell and the Minecraft server
  */
 
-var serverInstance = function () {
+var ServerObject = function () {
 
     var server = this;
 
@@ -211,4 +211,4 @@ var serverInstance = function () {
     }
 };
 
-var server = new serverInstance();
+var server = new ServerObject();
