@@ -155,6 +155,11 @@ var serverInstance = function () {
 
             startingServerDeferred.resolve();
             showNotification('Server Started', 'The Minecraft server started successfully!')
+
+            serverProperties.loadFile().done(function () {
+                serverProperties.saveFile();
+
+            });
         }
 
         // if server is closed
