@@ -3,5 +3,6 @@ angular.module("mainApp", [])
 
         // Function from dashboard.js
         dashboardController($scope);
+        serverProperties.angular($scope);
 
     }]);
