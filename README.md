@@ -6,7 +6,7 @@ Easy Minecraft Server is a multi platform program, that makes it very easy and q
 ##[Download here](https://github.com/viktorstrate/EasyMinecraftServer/releases/latest)
 
 ## Preview of the app
-![Preview](https://cloud.githubusercontent.com/assets/4233458/8728198/14203aae-2be4-11e5-862f-06b305c4e224.PNG)
+![Dashboard](https://cloud.githubusercontent.com/assets/4233458/8784117/82921f0e-2f20-11e5-8a9b-a26ea5c68c08.PNG)
 
 ## Contributing
 
