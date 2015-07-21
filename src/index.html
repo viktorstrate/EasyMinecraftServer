@@ -138,7 +138,7 @@
 
     <div class="property-item" title="The network port the server will use, default is 25565.">
         <div class="property-key">Server Port</div>
-        <input class="property-value" placeholder="25565" value="{{serverPort}}">
+        <input class="property-value" placeholder="25565" ng-model="serverPort">
     </div>
 
     <div class="property-item" title="Defines the difficulty of the server.">
@@ -153,13 +153,13 @@
 
     <div class="property-item" title="The maximum amount of online players at once.">
         <div class="property-key">Max players</div>
-        <input class="property-value" placeholder="20" value="{{maxPlayers}}">
+        <input class="property-value" placeholder="20" ng-model="maxPlayers">
     </div>
 
     <div class="property-item"
          title="This is the message that is displayed in the server list of the client, below the name.">
         <div class="property-key">Message of the Day</div>
-        <input class="property-value" placeholder="A Minecraft Server" value="{{motd}}" maxlength="59">
+        <input class="property-value" placeholder="A Minecraft Server" ng-model="motd" maxlength="59">
     </div>
 
     <div class="property-item" title="Defines the mode of gameplay">
@@ -222,12 +222,12 @@
 
     <div class="property-item" title="The 'level-name' value will be used as the world name and its folder name.">
         <div class="property-key">Level Name</div>
-        <input class="property-value" placeholder="world" value="{{levelName}}">
+        <input class="property-value" placeholder="world" ng-model="levelName">
     </div>
 
     <div class="property-item" title="Add a seed for your world, as in Singleplayer.">
         <div class="property-key">Level Seed</div>
-        <input class="property-value" value="{{levelSeed}}">
+        <input class="property-value" ng-model="levelSeed">
     </div>
 
     <div class="property-item" title="Determines the type of map that is generated.">
@@ -284,7 +284,7 @@
          title="If not zero, players are kicked from the server if they are idle for more than that many minutes.">
         <div class="property-key">Idle Timeout</div>
         <input class="property-value"
-               placeholder="Player idle timeout in minutes, 0 no timeout" value="{{playerIdleTimeout}}">
+               placeholder="Player idle timeout in minutes, 0 no timeout" ng-model="playerIdleTimeout">
     </div>
 
     <div class="property-item" title="Sets permission level for ops.">
@@ -299,18 +299,18 @@
 
     <div class="property-item" title="The maximum height in which building is allowed.">
         <div class="property-key">Max Build Height</div>
-        <input class="property-value" placeholder="256" value="{{maxBuildHeight}}">
+        <input class="property-value" placeholder="256" ng-model="maxBuildHeight">
     </div>
 
     <div class="property-item" title="This sets the maximum possible size in blocks. (1-29999984)">
         <div class="property-key">Max World Size</div>
-        <input class="property-value" placeholder="29999984" value="{{maxWorldSize}}">
+        <input class="property-value" placeholder="29999984" ng-model="maxWorldSize">
     </div>
 
     <div class="property-item"
          title="The maximum number of milliseconds a single tick may take before the server watchdog stops the server. -1 disable watchdog entirely">
         <div class="property-key">Max Tick Time</div>
-        <input class="property-value" placeholder="60000" value="{{maxTickTime}}">
+        <input class="property-value" placeholder="60000" ng-model="maxTickTime">
     </div>
 
     <div class="property-item" title="Defines whether structures (such as villages) will be generated.">
@@ -324,7 +324,7 @@
     <div class="property-item"
          title="Set this if you want the server to bind to a particular IP. It is strongly recommended that you leave server-ip blank!">
         <div class="property-key">Server IP</div>
-        <input class="property-value" value="{{serverIp}}">
+        <input class="property-value" ng-model="serverIp">
     </div>
 
     <div class="property-item"
@@ -338,21 +338,21 @@
 
     <div class="property-item" title="Determines the radius of the spawn protection.">
         <div class="property-key">Spawn Protection</div>
-        <input class="property-value" placeholder="16" value="{{spawnProtection}}">
+        <input class="property-value" placeholder="16" ng-model="spawnProtection">
     </div>
 
     <div class="property-item"
          title="Optional URI to a resource pack. The Hash is an optional SHA-1 digest of the resource pack, in lowercase hexadecimal. It's recommended to specify this. This improves the effectiveness and reliability of caching.">
         <div class="property-key">Resource Pack</div>
-        <input class="property-value" value="{{resourcePack}}">
+        <input class="property-value" ng-model="resourcePack">
 
         <div class="property-key">Hash</div>
-        <input class="property-value" value="{{resourcePackHash}}">
+        <input class="property-value" ng-model="resourcePackHash">
     </div>
 
     <div class="property-item" title="The settings used to customize world generation.">
         <div class="property-key">Generator Settings</div>
-        <input class="property-value" value="{{generatorSettings}}">
+        <input class="property-value" ng-model="generatorSettings">
     </div>
 
     <div class="property-item" title="Enables GameSpy4 protocol server listener. Used to get information about server.">
@@ -363,7 +363,7 @@
         </select>
 
         <div class="property-key">Query Port</div>
-        <input class="property-value" value="{{queryPort}}">
+        <input class="property-value" ng-model="queryPort">
     </div>
 
     <div class="property-item"
@@ -393,7 +393,7 @@
 
     <div class="property-item" title="-1 disable compression entirely. 0 - compress everything.">
         <div class="property-key">Network Compression</div>
-        <input class="property-value" placeholder="256" value="{{networkCompression}}">
+        <input class="property-value" placeholder="256" ng-model="networkCompression">
     </div>
 
     </div>
